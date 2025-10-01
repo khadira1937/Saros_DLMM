@@ -1,12 +1,6 @@
 {
-  "buildCommand": "pnpm --filter @dlmm-copilot/web build",
+  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm --filter @dlmm-copilot/web build",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "nextjs",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_STRATEGY_URL": "https://your-strategy.example.com",
-    "NEXT_PUBLIC_BOT_HEALTH_URL": "https://your-bot.example.com/health",
-    "NEXT_PUBLIC_MOCK_MODE": "true",
-    "NEXT_PUBLIC_CLUSTER": "devnet"
-  }
+  "outputDirectory": ".next"
 }
