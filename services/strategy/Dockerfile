@@ -15,13 +15,18 @@ RUN pnpm --filter @dlmm-copilot/strategy build
 # Runtime stage
 FROM node:20-slim AS runtime
 ENV NODE_ENV=production
+RUN corepack enable
 RUN useradd -m -u 10001 nodeuser
 WORKDIR /app
 
-COPY --from=build /app/services/strategy/dist ./services/strategy/dist
-COPY --from=build /app/services/strategy/package.json ./services/strategy/package.json
-COPY --from=build /app/node_modules ./node_modules
+# Copy workspace configuration and lockfile
+COPY --from=build /app/pnpm-lock.yaml /app/pnpm-workspace.yaml /app/package.json ./
 COPY --from=build /app/packages ./packages
+COPY --from=build /app/services/strategy/package.json ./services/strategy/package.json
+COPY --from=build /app/services/strategy/dist ./services/strategy/dist
+
+# Install only production dependencies
+RUN pnpm install --frozen-lockfile --filter @dlmm-copilot/strategy... --prod
 
 EXPOSE 4000
 HEALTHCHECK --interval=15s --timeout=3s --retries=3 CMD node -e "fetch('http://127.0.0.1:4000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
