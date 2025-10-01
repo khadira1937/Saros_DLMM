@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm --filter @dlmm-copilot/web build",
+  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm --filter @dlmm-copilot/core build && pnpm --filter @dlmm-copilot/web build",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "nextjs",
   "outputDirectory": ".next"
