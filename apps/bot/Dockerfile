@@ -15,14 +15,18 @@ RUN pnpm --filter @dlmm-copilot/bot build || true
 # Runtime stage
 FROM node:20-slim AS runtime
 ENV NODE_ENV=production
+RUN corepack enable
 RUN useradd -m -u 10001 nodeuser
 WORKDIR /app
 
-COPY --from=build /app/apps/bot/dist ./apps/bot/dist
-COPY --from=build /app/apps/bot/src ./apps/bot/src
-COPY --from=build /app/apps/bot/package.json ./apps/bot/package.json
-COPY --from=build /app/node_modules ./node_modules
+# Copy workspace configuration and lockfile
+COPY --from=build /app/pnpm-lock.yaml /app/pnpm-workspace.yaml /app/package.json ./
 COPY --from=build /app/packages ./packages
+COPY --from=build /app/apps/bot/package.json ./apps/bot/package.json
+COPY --from=build /app/apps/bot/dist ./apps/bot/dist
+
+# Install only production dependencies
+RUN pnpm install --frozen-lockfile --filter @dlmm-copilot/bot... --prod
 
 EXPOSE 4001
 HEALTHCHECK --interval=15s --timeout=3s --retries=3 CMD node -e "fetch('http://127.0.0.1:4001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"

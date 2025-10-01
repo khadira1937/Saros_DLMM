@@ -1,12 +1,13 @@
+// Load .env in local/dev; tolerate absence in production
+try {
+  await import('dotenv/config'); // ESM-friendly side-effect import
+} catch {}
+
 import http from 'node:http';
-import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import pino from 'pino';
 import { Telegraf, type Context } from 'telegraf';
 import { z } from 'zod';
-import { config as loadEnv } from 'dotenv';
 import type { StrategyResult, StrategyProblem } from '@dlmm-copilot/core';
 
 const parseEnvBoolean = (value: string | undefined): boolean => {
@@ -16,22 +17,6 @@ const parseEnvBoolean = (value: string | undefined): boolean => {
   const normalized = value.trim().toLowerCase();
   return ['true', '1', 'yes', 'on'].includes(normalized);
 };
-
-const moduleDir = dirname(fileURLToPath(import.meta.url));
-const packageRoot = dirname(moduleDir);
-const repoRoot = dirname(dirname(packageRoot));
-const orderedEnvFiles = [
-  join(repoRoot, '.env'),
-  join(repoRoot, '.env.local'),
-  join(packageRoot, '.env'),
-  join(packageRoot, '.env.local'),
-];
-
-for (const path of orderedEnvFiles) {
-  if (existsSync(path)) {
-    loadEnv({ path, override: true });
-  }
-}
 
 const {
   planRebalance,
