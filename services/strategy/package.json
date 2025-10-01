@@ -19,7 +19,7 @@
     "@fastify/swagger": "^8.15.0",
     "@fastify/swagger-ui": "^2.1.0",
     "@solana/web3.js": "^1.87.6",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "fastify": "^4.25.2",
     "zod": "^3.25.76"
   },
