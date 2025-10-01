@@ -1,4 +1,7 @@
-import 'dotenv/config';
+// Load .env in local/dev; tolerate absence in production
+try {
+  await import('dotenv/config'); // ESM-friendly side-effect import
+} catch {}
 
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
