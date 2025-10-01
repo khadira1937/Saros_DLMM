@@ -5,6 +5,13 @@ export * from './utils';
 export * from './dlmm';
 export * from './dlmmClient';
 export {
+  getEnvironment,
+  getStrategyEnvironment,
+  getBotEnvironment,
+  getWebEnvironment,
+  NETWORKS,
+} from './config';
+export {
   planRebalance,
   executeRebalance,
   planAdvanced,
