@@ -2,6 +2,7 @@
   "name": "@dlmm-copilot/strategy",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "dev": "tsx watch --clear-screen=false src/server.ts",

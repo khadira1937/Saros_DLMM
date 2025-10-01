@@ -8,9 +8,9 @@ import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
 import { createLogger } from '@dlmm-copilot/core';
 
-import { env } from './config';
-import { registerStrategyRoutes } from './routes/api';
-import { defaultProblemType, sendProblem } from './utils/problem';
+import { env } from './config.js';
+import { registerStrategyRoutes } from './routes/api.js';
+import { defaultProblemType, sendProblem } from './utils/problem.js';
 
 const logger = createLogger(env.LOG_LEVEL);
 
@@ -111,6 +111,7 @@ export const createServer = async (): Promise<void> => {
   });
 };
 
-if (require.main === module) {
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
   void createServer();
 }

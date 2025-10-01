@@ -12,8 +12,8 @@ import {
 } from '@dlmm-copilot/core';
 import { PublicKey } from '@solana/web3.js';
 
-import { env } from '../config';
-import { defaultProblemType, sendProblem, type ProblemDetail } from '../utils/problem';
+import { env } from '../config.js';
+import { defaultProblemType, sendProblem, type ProblemDetail } from '../utils/problem.js';
 import {
   AdvancedArmReq,
   AdvancedArmResp,
@@ -22,8 +22,8 @@ import {
   AdvancedKind,
   AdvancedPlanReq,
   AdvancedPlanResp,
-} from '../schemas/advancedOrders';
-import { consumeCode, createCode, getWallet } from '../botLinkStore';
+} from '../schemas/advancedOrders.js';
+import { consumeCode, createCode, getWallet } from '../botLinkStore.js';
 
 const walletCooldownMs = 15_000;
 const walletCooldown = new Map<string, number>();

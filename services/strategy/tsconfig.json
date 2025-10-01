@@ -5,6 +5,8 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "noEmit": false,
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "paths": {
       "@/*": ["./*"],
       "@dlmm-copilot/core": ["../../packages/core/src"],
