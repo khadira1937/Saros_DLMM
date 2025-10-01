@@ -8,8 +8,9 @@ services:
     autoDeploy: false
   - type: web
     name: dlmm-bot
-    env: docker
+    env: node
     plan: free
-    dockerfilePath: apps/bot/Dockerfile
-    healthCheckPath: /health
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @dlmm-copilot/core build && pnpm --filter @dlmm-copilot/bot build
+    startCommand: node apps/bot/dist/index.js
+    healthCheckPath: /
     autoDeploy: false

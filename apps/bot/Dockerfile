@@ -29,7 +29,7 @@ COPY --from=build /app/apps/bot/dist ./apps/bot/dist
 RUN pnpm install --frozen-lockfile --filter @dlmm-copilot/bot... --prod
 
 EXPOSE 4001
-HEALTHCHECK --interval=15s --timeout=3s --retries=3 CMD node -e "fetch('http://127.0.0.1:4001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+HEALTHCHECK --interval=15s --timeout=3s --retries=3 CMD node -e "fetch('http://127.0.0.1:4001/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 USER nodeuser
 CMD ["node","apps/bot/dist/index.js"]
