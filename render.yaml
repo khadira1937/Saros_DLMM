@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: dlmm-strategy
+    env: docker
+    plan: free
+    dockerfilePath: services/strategy/Dockerfile
+    healthCheckPath: /health
+    autoDeploy: false
+  - type: web
+    name: dlmm-bot
+    env: docker
+    plan: free
+    dockerfilePath: apps/bot/Dockerfile
+    healthCheckPath: /health
+    autoDeploy: false

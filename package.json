@@ -1,0 +1,49 @@
+{
+  "name": "dlmm-lp-copilot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DLMM LP Copilot - Advanced liquidity provision automation for Saros Finance",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "dev": "concurrently --continue-on-error --names \"web,strategy,bot\" --prefix-colors \"cyan,yellow,green\" \"pnpm web:dev\" \"pnpm strategy:dev\" \"pnpm bot:dev\"",
+    "build": "pnpm run -r build",
+    "lint": "pnpm run -r lint",
+    "typecheck": "pnpm run -r typecheck",
+    "test": "pnpm run -r test",
+    "clean": "pnpm run -r clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,tsx,json,md}\"",
+    "web:dev": "pnpm --filter @dlmm-copilot/web dev",
+    "strategy:dev": "pnpm --filter @dlmm-copilot/strategy dev",
+    "bot:dev": "pnpm --filter @dlmm-copilot/bot dev"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "solana",
+    "defi",
+    "dlmm",
+    "liquidity",
+    "automation",
+    "typescript",
+    "telegram-bot"
+  ],
+  "author": "DLMM LP Copilot Team",
+  "license": "MIT",
+  "dependencies": {
+    "@saros-finance/dlmm-sdk": "^1.4.0"
+  }
+}

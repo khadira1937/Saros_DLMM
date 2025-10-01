@@ -1,0 +1,33 @@
+packages:
+  - 'apps/*'
+  - 'services/*'
+  - 'packages/*'
+
+# Enable strict peer dependencies
+strict-peer-dependencies: true
+
+# Use hoisted node_modules for better performance
+hoist-pattern:
+  - '*'
+
+# Shared dependencies to hoist
+public-hoist-pattern:
+  - '@types/*'
+  - 'typescript'
+  - 'eslint*'
+  - 'prettier'
+
+# Workspace catalog for version management
+catalog:
+  '@solana/web3.js': '^1.87.6'
+  '@solana/wallet-adapter-base': '^0.9.23'
+  '@solana/wallet-adapter-react': '^0.15.35'
+  '@solana/wallet-adapter-wallets': '^0.19.32'
+  '@saros-finance/dlmm-sdk': '^1.0.0'
+  'next': '^14.1.0'
+  'react': '^18.2.0'
+  'react-dom': '^18.2.0'
+  'typescript': '^5.3.3'
+  'zod': '^3.22.4'
+  'fastify': '^4.25.2'
+  'grammy': '^1.21.1'

@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # Strategy API Service
+  strategy-api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.strategy
+      target: development
+    ports:
+      - "3001:3001"
+      - "9090:9090" # Metrics port
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - LOG_LEVEL=debug
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - STRATEGY_API_SECRET=development-secret
+    volumes:
+      - ../../services/strategy/src:/app/services/strategy/src
+      - ../../packages/core/src:/app/packages/core/src
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Telegram Bot
+  telegram-bot:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.bot
+      target: development
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+      - BOT_TOKEN=${BOT_TOKEN}
+      - STRATEGY_SERVICE_URL=http://strategy-api:3001
+      - STRATEGY_API_SECRET=development-secret
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+    volumes:
+      - ../../apps/bot/src:/app/apps/bot/src
+      - ../../packages/core/src:/app/packages/core/src
+    depends_on:
+      - strategy-api
+    restart: unless-stopped
+
+  # Next.js Web App
+  web-app:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web
+      target: development
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_STRATEGY_API_URL=http://localhost:3001/api/v1
+      - NEXT_PUBLIC_SOLANA_RPC_URL=https://api.devnet.solana.com
+      - NEXT_PUBLIC_SOLANA_NETWORK=devnet
+    volumes:
+      - ../../apps/web/src:/app/apps/web/src
+      - ../../packages/core/src:/app/packages/core/src
+    depends_on:
+      - strategy-api
+    restart: unless-stopped
+
+  # Optional: Redis for caching/session storage
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Optional: PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=dlmm_copilot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: dlmm-copilot-network

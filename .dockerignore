@@ -1,0 +1,12 @@
+# root .dockerignore
+.git
+.github
+node_modules
+**/node_modules
+pnpm-store
+**/dist
+.DS_Store
+**/*.log
+.env*
+apps/web/.next
+apps/web/out

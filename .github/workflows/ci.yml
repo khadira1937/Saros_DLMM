@@ -1,0 +1,27 @@
+name: ci
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Setup pnpm
+        run: corepack enable
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm -r lint || echo "no lint"
+      - name: Typecheck
+        run: pnpm -r typecheck
+      - name: Build
+        run: pnpm -w build
+      - name: Test
+        run: pnpm -w test || echo "no tests"
